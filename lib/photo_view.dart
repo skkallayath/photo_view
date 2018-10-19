@@ -85,6 +85,7 @@ class PhotoView extends StatefulWidget {
   const PhotoView({
     Key key,
     @required this.imageProvider,
+    this.photoFrame,
     this.loadingChild,
     this.backgroundColor = const Color.fromRGBO(0, 0, 0, 1.0),
     this.minScale,
@@ -128,6 +129,9 @@ class PhotoView extends StatefulWidget {
 
   /// Assists the activation of a hero animation within [PhotoView]
   final Object heroTag;
+
+  /// For adding a fixed overlay of frame which will not be affected on zoom or pan
+  final Widget photoFrame;
 
   final PhotoViewScaleStateChangedCallback scaleStateChangedCallback;
 
@@ -216,6 +220,7 @@ class _PhotoViewState extends State<PhotoView> {
       setNextScaleState: setNextScaleState,
       onStartPanning: onStartPanning,
       imageProvider: widget.imageProvider,
+      photoFrame: widget.photoFrame,
       imageInfo: info,
       scaleState: _scaleState,
       backgroundColor: widget.backgroundColor,

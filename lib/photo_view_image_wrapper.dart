@@ -12,6 +12,7 @@ class PhotoViewImageWrapper extends StatefulWidget {
     @required this.scaleState,
     @required this.scaleBoundaries,
     @required this.imageProvider,
+    this.photoFrame,
     @required this.size,
     this.backgroundColor,
     this.gaplessPlayback = false,
@@ -25,6 +26,7 @@ class PhotoViewImageWrapper extends StatefulWidget {
   final Color backgroundColor;
   final ScaleBoundaries scaleBoundaries;
   final ImageProvider imageProvider;
+  final Widget photoFrame;
   final bool gaplessPlayback;
   final Size size;
   final String heroTag;
@@ -247,19 +249,7 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
       ..scale(scaleStateAwareScale());
 
     return GestureDetector(
-      child: Container(
-        child: Center(
-            child: Transform(
-          child: CustomSingleChildLayout(
-            delegate: ImagePositionDelegate(widget.imageInfo.image.width / 1,
-                widget.imageInfo.image.height / 1),
-            child: _buildHero(),
-          ),
-          transform: matrix,
-          alignment: Alignment.center,
-        )),
-        decoration: BoxDecoration(color: widget.backgroundColor),
-      ),
+      child: _buildPhotoViewWithFrame(context, matrix),
       onDoubleTap: computeNextScaleState,
       onScaleStart: onScaleStart,
       onScaleUpdate: onScaleUpdate,
@@ -277,6 +267,35 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
     return Image(
       image: widget.imageProvider,
       gaplessPlayback: widget.gaplessPlayback,
+    );
+  }
+
+  Widget _buildPhotoViewWithFrame(BuildContext context, Matrix4 transform) {
+    if (widget.photoFrame == null) {
+      return _buildPhotoView(context, transform);
+    } else {
+      return Stack(
+        children: <Widget>[
+          _buildPhotoView(context, transform),
+          widget.photoFrame,
+        ],
+      );
+    }
+  }
+
+  Widget _buildPhotoView(BuildContext context, Matrix4 transform) {
+    return Container(
+      child: Center(
+          child: Transform(
+        child: CustomSingleChildLayout(
+          delegate: ImagePositionDelegate(widget.imageInfo.image.width / 1,
+              widget.imageInfo.image.height / 1),
+          child: _buildHero(),
+        ),
+        transform: transform,
+        alignment: Alignment.center,
+      )),
+      decoration: BoxDecoration(color: widget.backgroundColor),
     );
   }
 }
