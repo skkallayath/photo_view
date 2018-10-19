@@ -260,6 +260,7 @@ class PhotoViewInline extends StatefulWidget {
   final bool gaplessPlayback;
   final Object heroTag;
   final PhotoViewScaleStateChangedCallback scaleStateChangedCallback;
+  final Widget photoFrame;
 
   const PhotoViewInline({
     Key key,
@@ -271,6 +272,7 @@ class PhotoViewInline extends StatefulWidget {
     this.gaplessPlayback = false,
     this.heroTag,
     this.scaleStateChangedCallback,
+    this.photoFrame,
   }) : super(key: key);
 
   @override
@@ -300,6 +302,7 @@ class _PhotoViewInlineState extends State<PhotoViewInline>
       size: _size,
       heroTag: widget.heroTag,
       scaleStateChangedCallback: widget.scaleStateChangedCallback,
+      photoFrame: widget.photoFrame,
     );
   }
 }
